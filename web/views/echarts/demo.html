@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="main"></div>
+</body>
+<script src="../../js/jquery-3.3.1.js"></script>
+<script src="../../js/echarts4.2.0.js"></script>
+<script src="../../js/EchartsUtils.js"></script>
+<script>
+    $(function(){
+        test0();
+        test1();
+        test2();
+        test3();
+        test4();
+        test5();
+        test6();
+        test7();
+    });
+
+    //简单的饼图
+    function test0() {
+        var legendData = ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎'];
+        var seriesData = [];
+        seriesData.push({value:335, name:'直接访问'});
+        seriesData.push({value:310, name:'邮件营销'});
+        seriesData.push({value:234, name:'联盟广告'});
+        seriesData.push({value:135, name:'视频广告'});
+        seriesData.push({value:1548, name:'搜索引擎'});
+        var option = getSimplePieOption('某站点用户访问来源', legendData, '访问来源', seriesData);
+        $("#main").append("<div id='main0' style='width: 80%;margin-left: 10%;height: 300px;'></div>");
+        var echart = echarts.init(document.getElementById("main0"));
+        echart.setOption(option);
+    }
+
+    //双饼图
+    function test1() {
+        var legendData = ['rose1','rose2','rose3'];
+        var seriesData1 = [{value:10, name:'rose1'},{value:5, name:'rose2'},{value:15, name:'rose3'}];
+        var seriesData2 = [{value:10, name:'rose1'},{value:5, name:'rose2'},{value:15, name:'rose3'}];
+        var option = getDoublePieOption('双饼图', legendData, '左侧图', seriesData1, '右侧图', seriesData2);
+        $("#main").append("<div id='main1' style='width: 80%;margin-left: 10%;height: 300px;'></div>");
+        var echart = echarts.init(document.getElementById("main1"));
+        echart.setOption(option);
+    }
+
+    //嵌套环形图
+    function test2() {
+        var legendData = ['直达','营销广告','搜索引擎','邮件营销','联盟广告','视频广告','百度','谷歌','必应','其他'];
+        var seriesData1 = [{value:335, name:'直达'},{value:679, name:'营销广告'},{value:1548, name:'搜索引擎'}];
+        var seriesData2 = [{value:335, name:'直达'},{value:310, name:'邮件营销'},{value:234, name:'联盟广告'},{value:135, name:'视频广告'},
+            {value:1048, name:'百度'},{value:251, name:'谷歌'},{value:147, name:'必应'},{value:102, name:'其他'}];
+        var option = getNestedRingPieOption('嵌套环形图', legendData, '内圈', seriesData1, '外环', seriesData2);
+        $("#main").append("<div id='main2' style='width: 80%;margin-left: 10%;height: 300px;'></div>");
+        var echart = echarts.init(document.getElementById("main2"));
+        echart.setOption(option);
+    }
+
+    //简单的柱状/折线图
+    function test3() {
+        var axisData = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        var seriesData = [120, 200, 150, 80, 70, 110, 130];
+        var option = getSimpleBarOption('简单的柱状图', axisData, '柱状图', 'bar', seriesData);
+        $("#main").append("<div id='main3' style='width: 80%;margin-left: 10%;height: 300px;'></div>");
+        var echart = echarts.init(document.getElementById("main3"));
+        echart.setOption(option);
+    }
+
+    //简单的雷达图(维度图)
+    function test4() {
+        var indicator = [{ name: '销售', max: 6500},{ name: '管理', max: 16000},{ name: '信息技术', max: 30000},
+            { name: '客服', max: 38000},{ name: '研发', max: 52000}];
+        var seriesDataValue = [4300, 10000, 28000, 35000, 50000];
+        var option = getSimpleRadarOption('五维度图', indicator, '开销', seriesDataValue);
+        $("#main").append("<div id='main4' style='width: 80%;margin-left: 10%;height: 300px;'></div>");
+        var echart = echarts.init(document.getElementById("main4"));
+        echart.setOption(option);
+    }
+
+    //简单的漏斗图
+    function test5() {
+        var legendData = ['展现','点击','访问','咨询','订单'];
+        var seriesMax = 100;
+        var seriesData = [{value: 60, name: '访问'},{value: 40, name: '咨询'},{value: 20, name: '订单'},
+            {value: 80, name: '点击'},{value: 100, name: '展现'}];
+        var option = getSimpleFunnelOption('漏斗图', legendData, '漏斗图', seriesMax, seriesData);
+        $("#main").append("<div id='main5' style='width: 80%;margin-left: 10%;height: 300px;'></div>");
+        var echart = echarts.init(document.getElementById("main5"));
+        echart.setOption(option);
+    }
+
+    //多柱状图、柱状\折线混合图、多Y轴图、区域缩放
+    function test6() {
+        var legendData = ['蒸发量','降水量','平均温度'];
+        var axisData = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+        var series = [];
+        series.push(getBarSeries("蒸发量", "bar", 0, null, [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]));
+        series.push(getBarSeries("降水量", "bar", 0, null, [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]));
+        series.push(getBarSeries("平均温度", "line", 1, null, [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]));
+        var option = getComplexBarOption("气象变化", legendData, axisData, 2, series);
+        addDataZoom(option, '3月', '10月', false, true);
+        $("#main").append("<div id='main6' style='width: 80%;margin-left: 10%;height: 300px;'></div>");
+        var echart = echarts.init(document.getElementById("main6"));
+        echart.setOption(option);
+    }
+
+    //堆叠柱状图
+    function test7() {
+        var legendData = ['蒸发量','降水量','平均温度'];
+        var axisData = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+        var series = [];
+        series.push(getBarSeries("蒸发量", "bar", 0, "stack", [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]));
+        series.push(getBarSeries("降水量", "bar", 0, null, [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]));
+        series.push(getBarSeries("平均温度", "bar", 0, "stack", [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]));
+        var option = getComplexBarOption("气象变化", legendData, axisData, 1, series);
+        $("#main").append("<div id='main7' style='width: 80%;margin-left: 10%;height: 300px;'></div>");
+        var echart = echarts.init(document.getElementById("main7"));
+        echart.setOption(option);
+    }
+</script>
+</html>
